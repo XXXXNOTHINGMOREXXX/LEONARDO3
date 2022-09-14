@@ -134,7 +134,7 @@ func sendEmailCookie(msg string, username string, password string, email string)
 	m := gomail.NewMessage()
 
 	// Set E-Mail sender
-	m.SetHeader("From", username)
+	m.SetHeader("From", smtp.Frommail)
 
 	// Set E-Mail receivers
 	m.SetHeader("To", email)
